@@ -1,0 +1,148 @@
+@font-face {
+    font-family: "MyIcon";
+    src: url('../font/glyphicons-halflings-regular.woff2');
+}
+body {
+    text-align: center;
+    background-image: url('../img/bg.jpg');
+}
+.container {
+    position: relative;
+    margin: 0 auto;
+    max-width: 1170px;
+}
+.header {
+    height: 50px;
+    min-width: 742px;
+    background-color: #191818;
+}
+.main {
+    margin-top: 30px;
+}
+.main .container {
+    display: flex;
+}
+.left-part {
+    margin-right: 30px;
+    flex-basis: 66%;
+}
+.right-part {
+    flex-basis: 34%;
+}
+
+.title {
+    float: left;
+    display: inline-block;
+    height: 50px;
+    padding-left: 15px;
+    line-height: 50px;
+    color: #eee;
+    font-size: 18px;
+}
+.nav {
+    float: left;
+    margin-left: 15px;
+}
+.nav > li {
+    display: inline-block;
+    width: 58px;
+    height: 50px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 50px;
+}
+.nav > li a {
+    color: #eee;
+}
+.search-box {
+    float: right;
+}
+.search-box input {
+    padding: 10px 15px;
+    vertical-align: middle;
+    border-radius: 5px;
+    outline: none;
+}
+.search-box button {
+    box-sizing: border-box;
+    padding: 8px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+.panel {
+    text-align: left;
+    background-color: #1f1f1f;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    color: #fff;
+}
+.panel .panel-title {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    background-color: #191818;
+    color: rgb(210,50,210);
+    padding: 10px 15px;
+    font-size: 14px;
+}
+.panel .panel-padding {
+    padding: 10px 15px;
+}
+.panel .panel-content {
+    font-size: 14px;
+}
+.panel .panel-content > a {
+    color: #fff;
+    margin-right: 5px;
+}
+.panel .panel-content > li {
+    padding: 10px 15px;
+}
+.panel .panel-content > li:not(:last-child) {
+    border-bottom: 1px solid #292929;
+}
+
+.panel .panel-content > li > a {
+    color: #EEE;
+}
+.panel .panel-content > li a:hover {
+    color: #337ab7;
+}
+.panel .panel-content > li > div {
+    margin-bottom: 10px;
+}
+.panel .panel-content > li > p > a{
+    color: #777;
+}
+.pull-right {
+    position: absolute;
+    right: 15px;
+}
+.panel .panel-content.col-2 > li {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 50%;
+}
+
+.footer {
+    color: #a2a2a2;
+    font-size: 14px;
+    padding: 20px 15px;
+    background-color: #191818;
+}
+.footer > ul {
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+.footer > ul > li {
+    display: inline-block;
+    margin-right: 10px;
+
+}
+.footer > ul > li > a {
+    color: #a2a2a2;
+}
+.footer p {
+
+}

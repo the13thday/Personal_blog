@@ -1,0 +1,66 @@
+.erver-day {
+    padding: 10px 15px;
+    text-align: left;
+    background-color: #f5f5f5;
+    font-size: 14px;
+    border-radius: 5px;
+    box-shadow: 3px 4px 3px #888888;
+}
+.erver-day h4 {
+    position: relative;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: slateblue;
+}
+.erver-day h4 .icon::before {
+    color: slateblue;
+    display: inline-block;
+    font-family: MyIcon;
+    content: '\e122';
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+}
+.erver-day p {
+    margin-bottom: 10px;
+}
+.erver-day p.quote {
+    text-align: right;
+}
+
+.article-list {
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #fff;
+}
+.article {
+    box-shadow: 3px 4px 3px #888888;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+.article .article-title {
+    padding: 20px 0 10px 15px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.article .article-title a {
+    color: #13102b;
+}
+.article .article-title  a:hover {
+    color: #23527c;
+}
+.article .article-content {
+    padding: 0 15px 15px 15px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+.article .article-footer {
+    background-color: #1f1f1f;
+    padding: 10px 15px;
+    color: #eee;
+    font-size: 14px;
+}
+.article .article-footer a {
+    color: #eee;
+}
