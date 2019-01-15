@@ -25,6 +25,7 @@ body {
 .left-part {
     margin-right: 30px;
     flex-basis: 66%;
+    text-align: left;
 }
 .right-part {
     flex-basis: 34%;
@@ -145,4 +146,26 @@ body {
 }
 .footer p {
 
+}
+
+.page-tool {
+    font-size: 0;
+    display: inline-block;
+    margin: 30px 0;
+}
+.page-tool > ul > li {
+    font-size: 14px;
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #fff;
+    color: #424242;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+.page-tool > ul > li:not(.cur-page):hover {
+    background-color: #ccc;
+}
+.page-tool > ul > li.cur-page {
+    background-color: #191818;
+    color: #fff;
 }

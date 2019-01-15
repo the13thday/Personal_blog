@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/index.css">
 </head>
+
 <body>
     <header class="header">
         <div class="container">
@@ -28,93 +30,60 @@
     <div class="main">
         <div class="container">
             <div class="left-part">
-                <div class="erver-day">
+                <div class="every-day" id="every_day">
                     <h4>每日一句
                         <span class="icon"></span>
                     </h4>
-                    <p>erertresdgfdsfgdgr</p>
-                    <p>erertresdgfdsfgdgr</p>
-                    <p class="quote">————— fsdfsdf</p>
+                    <div v-html="content" class="content"></div>
                 </div>
-                <div class="article-area">
-                    <div class="article-list">
+                <div class="article-area" id="articleList">
+                    <div class="article-list" v-for="article in articleList">
                         <div class="article">
                             <h2 class="article-title">
-                                <a href="/">四联杀幽门螺杆菌第三天</a>
+                                <a href="/">{{ article.title }}</a>
                             </h2>
-                            <div class="article-content">前段时间总是干呕嗳气，吃饭很容易饱，饭后恶心想吐，喝咖啡后更剧烈。首次医院门诊，医生说是可能是胃动力不足消化不良，给开了点儿中成药，没要。问医生是否可以做一下钡餐或胃镜检查一下，于是预约了第二天的胃镜。第一次做胃镜，很顺利。胃镜报告显示胃角C2慢性萎缩性胃炎。几天后活检的病理结果显示慢性萎缩性胃炎，中度萎缩，中度炎症，中度活动，中度肠上皮化生，HP++……好...</div>
+                            <div class="article-content" v-html="article.content"></div>
                             <div class="article-footer">
-                                <span>发布于2018-10-30 |  浏览(443) | Tags：</span>
-                                <a href="/"> 幽门螺杆菌 萎缩性胃炎</a>
+                                <span>发布于{{ article.utime }} | 浏览({{ article.views }}) | Tags：</span>
+                                <a href="/"> {{ article.tags }}</a>
                             </div>
                         </div>
                     </div>
-                    <div class="article-list">
-                            <div class="article">
-                                <h2 class="article-title">
-                                    <a href="/">四联杀幽门螺杆菌第三天</a>
-                                </h2>
-                                <div class="article-content">前段时间总是干呕嗳气，吃饭很容易饱，饭后恶心想吐，喝咖啡后更剧烈。首次医院门诊，医生说是可能是胃动力不足消化不良，给开了点儿中成药，没要。问医生是否可以做一下钡餐或胃镜检查一下，于是预约了第二天的胃镜。第一次做胃镜，很顺利。胃镜报告显示胃角C2慢性萎缩性胃炎。几天后活检的病理结果显示慢性萎缩性胃炎，中度萎缩，中度炎症，中度活动，中度肠上皮化生，HP++……好...</div>
-                                <div class="article-footer">
-                                    <span>发布于2018-10-30 |  浏览(443) | Tags：</span>
-                                    <a href="/"> 幽门螺杆菌 萎缩性胃炎</a>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="page-turning"></div>
+                    <div class="page-tool">
+                        <ul>
+                            <li v-for="item in pageList" @click="jumpTo(item)" v-bind:class="{'cur-page': page === item.text}">{{ item.text }}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="right-part">
-                <div class="panel">
+                <div class="panel" id="randomTags">
                     <div class="panel-title">
                         <h4>随机标签云</h4>
                     </div>
                     <div class="panel-content panel-padding">
-                        <a href="/">ccc</a>
-                        <a href="/">adf</a>
-                        <a href="/">sdf</a>
-                        <a href="/">fds</a>
-                        <a href="/">zczxc</a>
-                        <a href="/">xcv</a>
+                        <a href="/" v-bind:style="{'color': randomColor(), 'font-size': randomSize()}" v-for="tag in tags">{{ tag }}</a>
                     </div>
                 </div>
-                <div class="panel">
+                <div class="panel" id="recentHot">
                     <div class="panel-title">
                         <h4>最近热门</h4>
                     </div>
                     <ul class="panel-content">
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
+                        <li v-for="hot in hots"><a v-bind:href="hot.link">{{ hot.title }}</a></li>
                     </ul>
                 </div>
-                <div class="panel">
+                <div class="panel" id="new_comments">
                     <div class="panel-title">
                         <h4>最新评论</h4>
                     </div>
                     <ul class="panel-content">
-                        <li>
+                        <li v-for="comment in comments">
                             <div>
-                                <span>此处是标题</span>
-                                <span class="pull-right">此处是时间</span>
+                                <span>{{ comment.title }}</span>
+                                <span class="pull-right">{{ comment.date }}</span>
                             </div>
-                            <p><a href="/">抱歉，由于种种原因，本站不再链接至贵</a></p>
-                        </li>
-                        <li>
-                            <div>
-                                <span>此处是标题</span>
-                                <span class="pull-right">此处是时间</span>
-                            </div>
-                            <p><a href="/">抱歉，由于种种原因，本站不再链接至贵</a></p>
-                        </li>
-                        <li>
-                            <div>
-                                <span>此处是标题</span>
-                                <span class="pull-right">此处是时间</span>
-                            </div>
-                            <p><a href="/">抱歉，由于种种原因，本站不再链接至贵</a></p>
+                            <p><a href="/">{{ comment.content }}</a></p>
                         </li>
                     </ul>
                 </div>
@@ -124,7 +93,12 @@
                         <h4>友情链接</h4>
                     </div>
                     <ul class="panel-content col-2">
-                       <li><a href="">唉踢茶馆</a></li><li><a href="">唉踢茶馆</a></li><li><a href="">唉踢茶馆</a></li><li><a href="">唉踢茶馆</a></li><li><a href="">唉踢茶馆</a></li><li><a href="">唉踢茶馆</a></li>
+                        <li><a href="">唉踢茶馆</a></li>
+                        <li><a href="">唉踢茶馆</a></li>
+                        <li><a href="">唉踢茶馆</a></li>
+                        <li><a href="">唉踢茶馆</a></li>
+                        <li><a href="">唉踢茶馆</a></li>
+                        <li><a href="">唉踢茶馆</a></li>
                     </ul>
                 </div>
             </div>
@@ -145,5 +119,10 @@
         </ul>
         <p>Copyright © 2010-2017 郑晓个人博客 All rights reserved. 由免费开源的WordPress强力驱动. 鲁ICP备14017955号站长统计</p>
     </footer>
+    <script src="./js/axios.js"></script>
+    <script src="./statice/vue.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/base.js"></script>
 </body>
+
 </html>
