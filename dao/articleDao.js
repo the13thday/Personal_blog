@@ -30,7 +30,7 @@ function queryArticleByPage (page, pageSize, callback) {
 
 function queryArticleCount (callback) {
     let connection = blogDB.createConnection();
-    let sql = 'SELECT count(1)as count FROM blog';
+    let sql = 'SELECT count(1) as count FROM blog';
     let params = [];
     connection.query(sql, params, function (err, res) {
         if (!err) {
@@ -42,9 +42,24 @@ function queryArticleCount (callback) {
     });
 }
 
+function queryArticleById (articleId, callback) {
+    let connection = blogDB.createConnection();
+    let sql = 'SELECT * FROM blog WHERE id = ?';
+    let params = [articleId];
+    connection.query(sql, params, function (err, res) {
+        if (!err) {
+            typeof callback === 'function' && callback(res);
+        } else {
+            console.log(err);
+        }
+        connection.end();
+    });
+}
+
 
 module.exports = {
     insertArticle,
     queryArticleByPage,
-    queryArticleCount
+    queryArticleCount,
+    queryArticleById
 }

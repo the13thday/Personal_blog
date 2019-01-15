@@ -21,6 +21,7 @@
   "homepage": "https://github.com/the13thday/Personal_blog#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "svg-captcha": "^1.3.12"
   }
 }

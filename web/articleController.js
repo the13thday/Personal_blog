@@ -69,7 +69,7 @@ function getArticle (request, response) {
     })
 }
 
-function getArticalCount (request, response) {
+function getArticleCount (request, response) {
     articleDao.queryArticleCount(function (res) {
         response.writeHead(200);
         response.write(respUtil.writeResult('success', '获取数据成功', res));
@@ -77,9 +77,19 @@ function getArticalCount (request, response) {
     })
 }
 
+function getArticleById (request, response) {
+    let query = url.parse(request.url, true).query;
+    articleDao.queryArticleById(query.id, function (res) {
+        response.writeHead(200);
+        response.write(respUtil.writeResult('success', '获取文章成功', res));
+        response.end();
+    });
+}
 
-path.set('/getArticalCount', getArticalCount);
+
+path.set('/getArticleCount', getArticleCount);
 path.set('/getArticle', getArticle);
 path.set('/editArticle', editArticle);
+path.set('/getArticleById', getArticleById);
 
 module.exports.path = path;

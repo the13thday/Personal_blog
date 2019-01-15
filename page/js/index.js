@@ -65,7 +65,7 @@ let articleList = new Vue({
         },
         getArticalCount: function () {
             axios({
-                url: '/getArticalCount',
+                url: '/getArticleCount',
                 method: 'get'
             }).then(res => {
                 this.count = res.data.data[0].count;
@@ -79,10 +79,13 @@ let articleList = new Vue({
         getArticalList: function () {
             return function () {
                 axios({
-                    url: '/getArticle?page=' + (this.page - 1) + '&pageSize=' + this.pageSize,
+                    url: '/getArticle/?page=' + (this.page - 1) + '&pageSize=' + this.pageSize,
                     method: 'get',
                 }).then(res => {
                     this.articleList = res.data.data;
+                    this.articleList.forEach(article => {
+                        article.link = '/article_detail.html?aId=' + article.id;
+                    });
                     this.getArticalCount();
                 }).catch(err => {
                     console.log(err);

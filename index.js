@@ -18,4 +18,10 @@ app.post('/editArticle', webLoader.get('/editArticle'));
 
 app.get('/getArticle', webLoader.get('/getArticle'));
 
-app.get('/getArticalCount', webLoader.get('/getArticalCount'));
+app.get('/getArticleCount', webLoader.get('/getArticleCount'));
+
+app.get('/getArticleById', webLoader.get('/getArticleById'));
+
+app.get('/submit_comment', webLoader.get('/submit_comment'));
+
+app.get('/getCaptcha', webLoader.get('/getCaptcha'));

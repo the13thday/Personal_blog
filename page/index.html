@@ -40,7 +40,7 @@
                     <div class="article-list" v-for="article in articleList">
                         <div class="article">
                             <h2 class="article-title">
-                                <a href="/">{{ article.title }}</a>
+                                <a v-bind:href="article.link">{{ article.title }}</a>
                             </h2>
                             <div class="article-content" v-html="article.content"></div>
                             <div class="article-footer">
