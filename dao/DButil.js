@@ -8,7 +8,7 @@ function createConnection () {
         user: 'root',
         password: 'the13thday',
         database: 'my_blog'
-    })
+    });
     connection.connect();
     return connection;
 }

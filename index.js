@@ -8,7 +8,7 @@ app.use(express.static('./' + globalConfig.page_path + '/'));
 
 app.listen(globalConfig.port, globalConfig.ip, () => {
     console.log('server is running');
-})
+});
 
 app.post('/editEveryDay', webLoader.get('/editEveryDay'));
 
