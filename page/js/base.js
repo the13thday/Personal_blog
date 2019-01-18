@@ -7,7 +7,7 @@ let search = new Vue({
         submit: function () {
             let text = this.searchText.replace(/\s+/g, '');
             if (text === '') return;
-            window.open('?q=' + text);
+            window.open('/index.html?q=' + text);
         }
     }
 })
