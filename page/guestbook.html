@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/guestbook.css">
+    <link rel="stylesheet" href="./css/comment.css">
 </head>
 <body>
     <header class="header">
@@ -19,9 +20,9 @@
                 <li><a href="/about.html">关于</a></li>
                 <li><a href="/guestbook.html">留言</a></li>
             </ul>
-            <div class="search-box">
-                <input type="text" placeholder="输入关键词查找">
-                <button>搜索</button>
+            <div class="search-box" id="search">
+                <input v-model="searchText" v-on:keyup.enter="submit" type="text" placeholder="输入关键词查找">
+                <button v-on:click="submit">搜索</button>
             </div>
         </div>
     </header>
@@ -33,108 +34,79 @@
                     <p>友链只交换技术类个人博客。</p>
                     <p>不要皮，谢谢。</p>
                 </div>
-                <div class="msg-area">
-                    <h4>关于：目前有61 条留言</h4>
-                    <div class="leave-msg">
+                <div v-if="commentsCount" class="comment-area" id="commentArea">
+                    <h4>关于：目前有 {{ commentsCount }} 条留言</h4>
+                    <div class="leave-msg" v-for="comment in commentsList">
                         <div class="msg-info">
                             <img class="avatar" src="./img/avatar.jpg" alt="">
-                            <span>cjh333：</span>
-                            <span>发表于 2018年06月26日 12:35[回复]</span>
+                            <span>{{ comment.user_name }}:</span>
+                            <span>
+                                <a v-if="comment.parent_name !== '__leave__msg__'" href="">回复@{{ comment.parent_name }}</a>
+                                发表于 {{ comment.ctime }}
+                                <a v-on:click="reply(comment.user_name)" href="#sendComment">[回复]</a>
+                            </span>
                         </div>
-                        <div class="msg-content">wordpress是后台管理框架吧？</div>
-                    </div>
-                    <div class="leave-msg">
-                        <div class="msg-info">
-                            <img class="avatar" src="./img/avatar.jpg" alt="">
-                            <span>cjh333：</span>
-                            <span>发表于 2018年06月26日 12:35[回复]</span>
-                        </div>
-                        <div class="msg-content">wordpress是后台管理框架吧？</div>
+                        <div class="msg-content">{{ comment.content }}</div>
                     </div>
                 </div>
-                <div class="comment-area">
-                    <p>发表评论</p>
-                    <div class="input-wrapper">
-                        <input type="text" name="name" placeholder="昵称">
-                        <input class="email" type="text" name="email" placeholder="邮箱（评论被恢复时你可能收到通知）">
-                    </div>
-                    <textarea name="" id="" cols="30" rows="10" placeholder="无意义的内容我可能不会回复你"></textarea>
-                    <div class="validate">
-                        <input type="text" name="validate" placeholder="验证码">
-                        <span>验证码</span>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn">提交留言</button>
-                        <button class="btn">重写</button>
+                <div class="send-comment-wrapper">
+                    <div class="send-comment" id="sendComment">
+                        <p>发表评论</p>
+                        <div class="input-wrapper">
+                            <input type="hidden" id="parent_comment_id" value="-3">
+                            <input type="hidden" id="parent_comment_name" value="__leave__msg__">
+                            <input type="text" name="name" placeholder="昵称" v-model="name">
+                            <input class="email" type="text" name="email" placeholder="邮箱（评论被恢复时你可能收到通知）" v-model="email">
+                        </div>
+                        <textarea name="content" id="" cols="30" rows="10" placeholder="无意义的内容我可能不会回复你" v-model="content"></textarea>
+                        <div class="validate">
+                            <input  class="captcha" type="text" name="validate" placeholder="验证码" v-model="validate">
+                            <span v-on:click="getCaptchaCode" v-html="svgCaptcha"></span>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn" @click="submitComment">提交留言</button>
+                            <button class="btn" @click="clearInput">重写</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="right-part">
-                <div class="panel">
+                <div class="panel" id="randomTags">
                     <div class="panel-title">
                         <h4>随机标签云</h4>
                     </div>
                     <div class="panel-content panel-padding">
-                        <a href="/">ccc</a>
-                        <a href="/">adf</a>
-                        <a href="/">sdf</a>
-                        <a href="/">fds</a>
-                        <a href="/">zczxc</a>
-                        <a href="/">xcv</a>
+                        <a v-for="tag in tags" v-bind:href="tag.link" v-bind:style="{'color': randomColor(), 'font-size': randomSize()}" >{{ tag.tag }}</a>
                     </div>
                 </div>
-                <div class="panel">
+                <div class="panel" id="recentHot">
                     <div class="panel-title">
                         <h4>最近热门</h4>
                     </div>
                     <ul class="panel-content">
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
-                        <li><a href="/">python+selenium自动登录qq空间并下载</a></li>
+                        <li v-for="hot in hots"><a v-bind:href="hot.link">{{ hot.title }}</a></li>
                     </ul>
                 </div>
-                <div class="panel">
+                <div class="panel" id="new_comments">
                     <div class="panel-title">
                         <h4>最新评论</h4>
                     </div>
                     <ul class="panel-content">
-                        <li>
+                        <li v-for="comment in comments">
                             <div>
-                                <span>此处是标题</span>
-                                <span class="pull-right">此处是时间</span>
+                                <span>{{ comment.title }}</span>
+                                <span class="pull-right">{{ comment.date }}</span>
                             </div>
-                            <p><a href="/">抱歉，由于种种原因，本站不再链接至贵</a></p>
-                        </li>
-                        <li>
-                            <div>
-                                <span>此处是标题</span>
-                                <span class="pull-right">此处是时间</span>
-                            </div>
-                            <p><a href="/">抱歉，由于种种原因，本站不再链接至贵</a></p>
-                        </li>
-                        <li>
-                            <div>
-                                <span>此处是标题</span>
-                                <span class="pull-right">此处是时间</span>
-                            </div>
-                            <p><a href="/">抱歉，由于种种原因，本站不再链接至贵</a></p>
+                            <p><a v-bind:href="toWhere(comment.aId)">{{ comment.content }}</a></p>
                         </li>
                     </ul>
                 </div>
-
                 <div class="panel">
                     <div class="panel-title">
                         <h4>友情链接</h4>
                     </div>
-                    <ul class="panel-content col-2">
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
+                    <ul class="panel-content col-2" id="friend_links">
+                        <li v-for="link in links"><a v-bind:href="link.url">{{ link.name }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -155,5 +127,10 @@
         </ul>
         <p>Copyright © 2010-2017 郑晓个人博客 All rights reserved. 由免费开源的WordPress强力驱动. 鲁ICP备14017955号站长统计</p>
     </footer>
+
+    <script src="js/axios.js"></script>
+    <script src="statice/vue.js"></script>
+    <script src="js/base.js"></script>
+    <script src="./js/guestbook.js"></script>
 </body>
 </html>

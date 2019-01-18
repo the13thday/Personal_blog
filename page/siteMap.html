@@ -10,16 +10,16 @@
 </head>
 <body>
     <h1 class="header">个人博客的's SiteMap</h1>
-    <div class="map"><b><a href="/">个人博客 >> </a></b>
-    <a href="/">站点地图</a></div>
-    <div class="content">
+    <div class="map"><b><a href="/index.html">个人博客 >> </a></b>
+    站点地图</div>
+    <div class="content" id="siteMap">
         <h4 class="content-header">最新文章</h4>
         <ul>
-            <li><a href="">C语言实现单链表的创建、元素添加删除等操作</a></li>
-            <li><a href="">C语言实现单链表的创建、元素添加删除等操作</a></li>
-            <li><a href="">C语言实现单链表的创建、元素添加删除等操作</a></li>
-            <li><a href="">C语言实现单链表的创建、元素添加删除等操作</a></li>
+            <li v-for="article in articleList"><a v-bind:href="article.link">{{ article.title }}</a></li>
         </ul>
     </div>
+    <script src="./statice/vue.js"></script>
+    <script src="./js/axios.js"></script>
+    <script src="./js/site_map.js"></script>
 </body>
 </html>

@@ -24,21 +24,3 @@ body {
     padding: 15px 10px;
     font-size: 16px;
 }
-.leave-msg {
-    text-align: left;
-    color: #31708f;
-    border: 1px dashed #7ca4c1;
-    background-color: #d9edf7;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-.msg-info {
-    margin-bottom: 10px;
-}
-.msg-info .avatar {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-    border-radius: 50%;
-}

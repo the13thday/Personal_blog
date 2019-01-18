@@ -72,9 +72,11 @@ const sendComment = new Vue({
                 if (!this.name) {
                     this.name = "匿名..."
                 }
+                let parentId = document.getElementById('parent_comment_id').value;
+                let parentName = document.getElementById('parent_comment_name').value;
                 axios({
                     method: 'get',
-                    url: '/submit_comment?id=' + this.id + '&name=' + this.name + '&email=' + this.email + '&content=' + this.content
+                    url: '/submit_comment?id=' + this.id + '&parentId=' + parentId + '&parentName=' + parentName + '&name=' + this.name + '&email=' + this.email + '&content=' + this.content
                 }).then(res => {
                     if (res && res.data.status === 'success') {
                         alert(res.data.msg);
@@ -97,4 +99,48 @@ const sendComment = new Vue({
             return query.aId;
         }
     }
+});
+
+const commentArea = new Vue({
+    el: '#commentArea',
+    data: {
+        commentsCount: 0,
+        commentsList: []
+    },
+    methods: {
+        reply: function (parentId, parentName) {
+            document.getElementById('parent_comment_id').value = parentId;
+            document.getElementById('parent_comment_name').value = parentName;
+        }
+    },
+    computed: {
+        id () {
+            let qArr = location.search.includes('?') ? location.search.slice(1).split('&') : location.search.split('&');
+            let query = {};
+            qArr.forEach(item => {
+                let temp = item.split('=');
+                query[temp[0].trim()] = temp[1].trim();
+            });
+            return query.aId;
+        }
+    },
+    created: function () {
+        axios.get('/getCommentCountById?id=' + this.id).then(res => {
+            let count = res.data.data[0].count;
+            if (count === 0) {
+                return;
+            } else {
+                this.commentsCount = count;
+                axios.get('/getCommentsById?id=' + this.id).then(res => {
+                    this.commentsList = res.data.data;
+                    console.log(this.commentsList);
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        })
+        
+
+    }
 })
+

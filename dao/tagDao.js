@@ -1,6 +1,6 @@
 const blogDB = require('./DButil');
 
-function queryTag (name, callback) {
+function queryTagByName (name, callback) {
     let connection = blogDB.createConnection();
     let sql = 'SELECT * FROM tags where tag = ?';
     let params = [name];
@@ -28,6 +28,35 @@ function insertTag (tagName, ctime, utime, callback) {
     });
 }
 
+function queryRandomTags (callback) {
+    let connection = blogDB.createConnection();
+    let sql = 'SELECT * FROM tags';
+    let params = [];
+    connection.query(sql, params, function (err, res) {
+        if (!err) {
+            typeof callback && callback(res);
+        } else {
+            console.log(err);
+        }
+        connection.end();
+    });
+}
 
-module.exports.queryTag = queryTag;
+function queryTagIdByName (name, callback) {
+    let connection = blogDB.createConnection();
+    let sql = 'SELECT id FROM tags where tag = ?';
+    let params = [name];
+    connection.query(sql, params, function (err, res) {
+        if (!err) {
+            typeof callback === 'function' && callback(res);
+        } else {
+            console.log(err);
+        }
+        connection.end();
+    });
+}
+
+module.exports.queryTagByName = queryTagByName;
 module.exports.insertTag = insertTag;
+module.exports.queryRandomTags = queryRandomTags;
+module.exports.queryTagIdByName = queryTagIdByName;

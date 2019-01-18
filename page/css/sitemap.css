@@ -32,5 +32,9 @@ body {
     margin-bottom: 5px;
 }
 .content > ul > li > a {
+    font-size: 13px;
     color: #000;
+}
+.content > ul > li > a:hover {
+    color: red;
 }

@@ -25,3 +25,23 @@ app.get('/getArticleById', webLoader.get('/getArticleById'));
 app.get('/submit_comment', webLoader.get('/submit_comment'));
 
 app.get('/getCaptcha', webLoader.get('/getCaptcha'));
+
+app.get('/getCommentsById', webLoader.get('/getCommentsById'));
+
+app.get('/getCommentCountById', webLoader.get('/getCommentCountById'));
+
+app.get('/getAllArticle', webLoader.get('/getAllArticle'));
+
+app.get('/getRandomTags', webLoader.get('/getRandomTags'));
+
+app.get('/getHotArticle', webLoader.get('/getHotArticle'));
+
+app.get('/getRecentComments', webLoader.get('/getRecentComments'));
+
+app.get('/getArticleByTag', webLoader.get('/getArticleByTag'));
+
+app.get('/getArticleCountOfTag', webLoader.get('/getArticleCountOfTag'));
+
+app.get('/searchTitle', webLoader.get('/searchTitle'));
+
+app.get('/getArticalCountBySearch', webLoader.get('/getArticalCountBySearch'));

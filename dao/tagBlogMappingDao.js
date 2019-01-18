@@ -28,5 +28,35 @@ function insertTagBlogMapping (tagId, blogId, ctime, utime, callback) {
     });
 }
 
+function queryBlogIdByTagId (tagId, offset, limit, callback) {
+    let connection = blogDB.createConnection();
+    let sql = 'SELECT blog_id FROM tag_blog_mapping WHERE tag_id = ? LIMIT ?,?';
+    let params = [tagId,offset, limit];
+    connection.query(sql, params, function (err, res) {
+        if (!err) {
+            typeof callback === 'function' && callback(res);
+        } else {
+            console.log(err);
+        }
+        connection.end()
+    });
+}
+
+function queryArticleCountOfTag (tagId, callback) {
+    let connection = blogDB.createConnection();
+    let sql = 'SELECT count(1) as count FROM tag_blog_mapping where tag_id = ?';
+    let params = [tagId];
+    connection.query(sql, params, function (err, res) {
+        if (!err) {
+            typeof callback === 'function' && callback(res);
+        } else {
+            console.log(err);
+        }
+        connection.end();
+    });
+}
+
 module.exports.queryTagBlogMapping = queryTagBlogMapping;
 module.exports.insertTagBlogMapping = insertTagBlogMapping;
+module.exports.queryBlogIdByTagId = queryBlogIdByTagId;
+module.exports.queryArticleCountOfTag = queryArticleCountOfTag;

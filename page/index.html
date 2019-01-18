@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +9,6 @@
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/index.css">
 </head>
-
 <body>
     <header class="header">
         <div class="container">
@@ -21,9 +19,9 @@
                 <li><a href="/about.html">关于</a></li>
                 <li><a href="/guestbook.html">留言</a></li>
             </ul>
-            <div class="search-box">
-                <input type="text" placeholder="输入关键词查找">
-                <button>搜索</button>
+            <div class="search-box" id="search">
+                <input v-model="searchText" v-on:keyup.enter="submit" type="text" placeholder="输入关键词查找">
+                <button v-on:click="submit">搜索</button>
             </div>
         </div>
     </header>
@@ -36,7 +34,9 @@
                     </h4>
                     <div v-html="content" class="content"></div>
                 </div>
+               
                 <div class="article-area" id="articleList">
+                    <div v-if="count === 0" class="msg-box">找不你想要的文章</div>
                     <div class="article-list" v-for="article in articleList">
                         <div class="article">
                             <h2 class="article-title">
@@ -44,8 +44,8 @@
                             </h2>
                             <div class="article-content" v-html="article.content"></div>
                             <div class="article-footer">
-                                <span>发布于{{ article.utime }} | 浏览({{ article.views }}) | Tags：</span>
-                                <a href="/"> {{ article.tags }}</a>
+                                <span>发布于: {{ article.utime }} | 浏览({{ article.views }}) | Tags：</span>
+                                <span> {{ article.tags }}</span>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                         <h4>随机标签云</h4>
                     </div>
                     <div class="panel-content panel-padding">
-                        <a href="/" v-bind:style="{'color': randomColor(), 'font-size': randomSize()}" v-for="tag in tags">{{ tag }}</a>
+                        <a v-for="tag in tags" v-bind:href="tag.link" v-bind:style="{'color': randomColor(), 'font-size': randomSize()}" >{{ tag.tag }}</a>
                     </div>
                 </div>
                 <div class="panel" id="recentHot">
@@ -83,22 +83,16 @@
                                 <span>{{ comment.title }}</span>
                                 <span class="pull-right">{{ comment.date }}</span>
                             </div>
-                            <p><a href="/">{{ comment.content }}</a></p>
+                            <p><a v-bind:href="toWhere(comment.aId)">{{ comment.content }}</a></p>
                         </li>
                     </ul>
                 </div>
-
                 <div class="panel">
                     <div class="panel-title">
                         <h4>友情链接</h4>
                     </div>
-                    <ul class="panel-content col-2">
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
-                        <li><a href="">唉踢茶馆</a></li>
+                    <ul class="panel-content col-2" id="friend_links">
+                        <li v-for="link in links"><a v-bind:href="link.url">{{ link.name }}</a></li>
                     </ul>
                 </div>
             </div>

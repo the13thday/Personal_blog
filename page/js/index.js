@@ -20,12 +20,12 @@ let articleList = new Vue({
     data: {
         page: 1,
         pageSize: 5,
-        count: 0,
+        count: 1,
         articleList: [],
         pageList: []
     },
     created: function () {
-        this.getArticalList();     // 此处利用了 computed 的计算机制，即getter 导致计算
+        this.getArticalList(); // 此处利用了 computed 的计算机制，即getter 导致计算
     },
     methods: {
         jumpTo: function (pageItem) {
@@ -73,20 +73,87 @@ let articleList = new Vue({
             }).catch(err => {
                 console.log(err);
             });
+        },
+        getArticleCountOfTag: function (tag) {
+            axios({
+                method: 'get',
+                url: '/getArticleCountOfTag?tag=' + tag
+            }).then(res => {
+                this.count = res.data.data[0].count;
+                this.gereratePageTool();
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+        getArticalCountBySearch: function (q) {
+            axios({
+                method: 'get',
+                url: '/getArticalCountBySearch?q=' + q
+            }).then(res => {
+                this.count = res.data.data[0].count;
+                this.gereratePageTool();
+            }).catch(err => {
+                console.log(err);
+            });
         }
     },
     computed: {
         getArticalList: function () {
             return function () {
+                let query = {};
+                if (location.search) {
+                    let qArr = location.search.includes('?') ? location.search.slice(1).split('&') : location.search.split('&');
+                    qArr.forEach(item => {
+                        let temp = item.split('=');
+                        query[temp[0].trim()] = temp[1].trim();
+                    });
+                }
+                if (!query.tag && !query.q) {
+                    axios({
+                        url: '/getArticle/?page=' + (this.page - 1) + '&pageSize=' + this.pageSize,
+                        method: 'get',
+                    }).then(res => {
+                        this.articleList = res.data.data;
+                        this.articleList.forEach(article => {
+                            article.link = '/article_detail.html?aId=' + article.id;
+                        });
+                        this.getArticalCount();
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                } else if (query.tag) {
+                    this.getArticalByTag(query.tag);
+                } else {
+                    this.getArticalBySearch(decodeURI(query.q));
+                }
+                
+            }
+        },
+        getArticalByTag: function () {
+            return function (tag) {
                 axios({
-                    url: '/getArticle/?page=' + (this.page - 1) + '&pageSize=' + this.pageSize,
                     method: 'get',
+                    url: '/getArticleByTag?tagId=' + tag + '&page=' + (this.page - 1) + '&pageSize=' + this.pageSize
                 }).then(res => {
                     this.articleList = res.data.data;
                     this.articleList.forEach(article => {
                         article.link = '/article_detail.html?aId=' + article.id;
                     });
-                    this.getArticalCount();
+                    this.getArticleCountOfTag(tag);
+                }).catch(err => console.log(err))
+            }
+        },
+        getArticalBySearch: function () {
+            return function (q) {
+                axios({
+                    method: 'get',
+                    url: '/searchTitle?q=' + q + '&page=' + (this.page - 1) + '&pageSize=' + this.pageSize
+                }).then(res => {
+                    this.articleList = res.data.data;
+                    this.articleList.forEach(article => {
+                        article.link = '/article_detail.html?aId=' + article.id;
+                    });
+                    this.getArticalCountBySearch(q);
                 }).catch(err => {
                     console.log(err);
                 });
